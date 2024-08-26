@@ -1,19 +1,21 @@
 import datetime as dt
 import requests
-import datetime
+from datetime import datetime
 
 # Constant values
-DATO = datetime.datetime.now().isoformat()[0:11] + "00:00:00"
+DATE_DATA = datetime.now().isoformat()[0:11] + "00:00:00"
 TIME = (dt.datetime.now().strftime('%H'))
+DATE = datetime.now().strftime("%d-%m-%Y")
+
 
 def fetch() -> dict:
-    URL = "https://api.energifyn.dk/api/graph/consumptionprice?date=26-08-2024"
+    URL = f"https://api.energifyn.dk/api/graph/consumptionprice?date={DATE}"
     response = requests.get(URL)
     data = response.json()
 
     return data
 
-def get(h: int, compas: str, data: dict, date: str):
+def get(h: int, compas: str, data: dict, date: str) -> dict:
     if compas == "east":
         print(data['eastPrices'][str(date)]['prices'][h])
         return data['eastPrices'][str(date)]['prices'][h]
@@ -40,6 +42,6 @@ def graph(data):
     plt.show()
 
 data = fetch()
-get(int(TIME), "west", data, DATO)
-get(int(TIME), "east", data, DATO)
+get(int(TIME), "west", data, DATE_DATA)
+get(int(TIME), "east", data, DATE_DATA)
 graph(data)
