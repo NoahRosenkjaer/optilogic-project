@@ -1,0 +1,8 @@
+El Tariffer
+
+Elafgift: 0,95125
+Systemtarif: 0,06375
+Transmissionsnettarif = 0,0925
+Systemabonnement = 0,0257
+Nettarif C time = 0,0
+Netabonnement = 0,06
