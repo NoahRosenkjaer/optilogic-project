@@ -6,7 +6,7 @@ from datetime import datetime
 DATE_DATA = datetime.now().isoformat()[0:11] + "00:00:00"
 TIME = (dt.datetime.now().strftime('%H'))
 DATE = datetime.now().strftime("%d-%m-%Y")
-
+TARIF = 0.0925
 
 def fetch() -> dict:
     try: 
@@ -15,7 +15,6 @@ def fetch() -> dict:
         data = response.json()
     except  ConnectionError as e:
         print(f"Error: {e}")
-        raise e
     return data
 
 def get(h: int, compas: str, data: dict, date: str) -> dict:
@@ -45,6 +44,7 @@ def graph(data, date):
     plt.show()
 
 data = fetch()
-get(int(TIME), "west", data, DATE_DATA)
-get(int(TIME), "east", data, DATE_DATA)
+print(data)
+#get(int(TIME), "west", data, DATE_DATA)
+#get(int(TIME), "east", data, DATE_DATA)
 #graph(data, DATE_DATA)
