@@ -10,5 +10,6 @@
 
 - Vi har lavet 2 python programmer som kan indhente data fra EnergiFyn.
 - Vi har lavet en mySQL database som en docker container
+- Vi har fået DBVisualizer forbundet med database
 
 ### xx-xx-2024

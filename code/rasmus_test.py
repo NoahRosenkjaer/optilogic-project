@@ -15,12 +15,15 @@ def fetch(h,x):
         data = responce.json()
 
         if x == "west":
-            return data["westPrices"][str(dato1)]["prices"][h]["price"]
+            west = data["westPrices"][str(dato1)]["prices"][h]["price"]
+            return west
+        
         elif x == "east":
-            return data["eastPrices"][str(dato1)]["prices"][h]["price"]
+            east = data["eastPrices"][str(dato1)]["prices"][h]["price"]
+            return east
         
     except Exception as e:
         print(e)
-        
+
 print(fetch(int(timenr),"west"))
 print(fetch(int(timenr),"east"))
