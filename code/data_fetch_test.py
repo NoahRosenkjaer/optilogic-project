@@ -9,10 +9,13 @@ DATE = datetime.now().strftime("%d-%m-%Y")
 
 
 def fetch() -> dict:
-    URL = f"https://api.energifyn.dk/api/graph/consumptionprice?date={DATE}"
-    response = requests.get(URL)
-    data = response.json()
-
+    try: 
+        URL = f"https://api.energifyn.dk/api/graph/consumptionprice?date={DATE}"
+        response = requests.get(URL)
+        data = response.json()
+    except  ConnectionError as e:
+        print(f"Error: {e}")
+        raise e
     return data
 
 def get(h: int, compas: str, data: dict, date: str) -> dict:
@@ -23,13 +26,13 @@ def get(h: int, compas: str, data: dict, date: str) -> dict:
         print(data['westPrices'][str(date)]['prices'][h])
         return data['westPrices'][str(date)]['prices'][h]
 
-def graph(data):
+def graph(data, date):
     import matplotlib.pyplot as plt
     import numpy as np
 
     x, y = [], []
 
-    for element in data['westPrices']['2024-08-26T00:00:00']['prices']:
+    for element in data['westPrices'][str(date)]['prices']:
         x.append(element['hour'][11:13])
         y.append(element['price'])
 
@@ -44,4 +47,4 @@ def graph(data):
 data = fetch()
 get(int(TIME), "west", data, DATE_DATA)
 get(int(TIME), "east", data, DATE_DATA)
-graph(data)
+#graph(data, DATE_DATA)
