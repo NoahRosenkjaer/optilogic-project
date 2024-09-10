@@ -2,7 +2,7 @@ import requests
 
 
 try: 
-    URL = "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=60.10&lon=9.58"
+    URL = "https://www.dmi.dk/lokation/show/DK/2615876/Odense/?api-key="
     response = requests.get(URL)
     data = response.json()
 except  ConnectionError as e:
