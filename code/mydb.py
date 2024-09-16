@@ -7,43 +7,75 @@ mydb = mysql.connector.connect(
   password="1234",
   database="mydatabase"
 )
-print(mydb.is_connected())
 
-#mycursor = mydb.cursor()
+if (mydb.is_connected()) == True:
+    print("Connected to database")
+
+mycursor = mydb.cursor()
+
+""" Lav en database """
 #mycursor.execute("CREATE DATABASE mydatabase")
+
+''' Lav et table '''
+
+
+brugere_test = """CREATE TABLE customers (
+                   id INT AUTO_INCREMENT PRIMARY KEY,
+                   forename VARCHAR(20) NOT NULL,
+                   surname VARCHAR(20) NOT NULL,
+                   address VARCHAR(20) NOT NULL,
+                   postalcode VARCHAR(4) NOT NULL,
+                   phone VARCHAR(8) NOT NULL
+                   )"""
+
+#mycursor.execute(brugere_test)
 #mycursor.execute("CREATE TABLE prices (dato VARCHAR(255), price VARCHAR(255))")
 
-#mycursor.execute("SHOW DATABASES")
-#mycursor.execute("SHOW TABLES")
+def vis():
+    mycursor.execute("SHOW DATABASES")
+    for x in mycursor:
+      print(x)
 
-# for x in mycursor:
-#     print(x)
+def std_insert(table: str, coulum_1: str, coulum_2: str, value_1: str, value_2: str): #Insert én række i et table
+    sql = f"INSERT INTO {table} ({coulum_1}, {coulum_2}) VALUES (%s, %s)"
+    val = (f"{value_1}", f"{value_2}")
 
-#print(mydb)
+    mycursor.execute(sql,val)
+    mydb.commit()
+    print("1 record inserted, ID:", mycursor.lastrowid)
 
-# Indsættelse af data i specifik kolonne
-'''
-sql = "INSERT INTO prices (dato, price) VALUES (%s, %s)"
-val = ("28-08-2024", "1.2")
-mycursor.execute(sql, val)
 
-mydb.commit()
+def std_query(table: str, coulum_1: str, coulumn_2: str, all: str,): #Fetcher kolonner fra et table.
+    
+    if all == "all":
+        query = f"SELECT * FROM {table}"
 
-print(mycursor.rowcount, "record inserted.")
-'''
+    elif all == "0":
+        query = f"SELECT {coulum_1},{coulumn_2} FROM {table}" 
+    print(query)
 
-#Fetcher kolonner fra et table.
-'''
-mycursor = mydb.cursor()
-  
-query = "SELECT dato, price FROM prices"
-mycursor.execute(query)
-   
-myresult = mycursor.fetchall()
-   
-for x in myresult:
-    print(x)
-'''
+    mycursor.execute(query)
+    myresult = mycursor.fetchall()
+
+    for x in myresult:
+        print(x)
+
+def std_kundequery(table: str, coulumn: str, adress: str):
+    
+    sql = f"SELECT * FROM {table} WHERE address ='{adress}'"
+
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+
+    for x in myresult:
+        print(x)
+
+
+
+#std_query("prices", "dato", "price", "all")
+#std_insert("prices", "dato", "price", "16-09-2024", "1.05")
+
+
 
 # Disconnect
 mydb.close()
