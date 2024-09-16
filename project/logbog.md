@@ -21,11 +21,14 @@
 
 ### 9-09-2024
 
-- Virksomhedsbesøg ved
+- Virksomhedsbesøg ved OptiLogic
 
 ### 10-09-2024
 
-- Vi har arbejdet videre på strømpris API
+- Vi har arbejdet videre på DMI API
 
 ### 16-09-2024
 
+- Vi har arbejdet videre på strømpris/yr API
+- MySQL database
+- Node-red
