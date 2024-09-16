@@ -18,3 +18,14 @@
 - Vi har arbejdet videre på strømpris API
 - Vi har undersøgt tariffer og vejr
 - Vi har udarbejdet et foreløbigt teknisk diagrams
+
+### 9-09-2024
+
+- Virksomhedsbesøg ved
+
+### 10-09-2024
+
+- Vi har arbejdet videre på strømpris API
+
+### 16-09-2024
+
