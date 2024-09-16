@@ -10,7 +10,7 @@
 
 #### Code (python)
 
-- yr_weather 
+- yr_weather
 
 ```pip install yr_weather```
 
@@ -21,3 +21,7 @@
 - dotenv
 
 ```pip install dotenv```
+
+- mysql
+
+```pip install mysql-connector-python```
