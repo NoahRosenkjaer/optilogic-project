@@ -32,3 +32,4 @@
 - Vi har arbejdet videre på strømpris/yr API
 - MySQL database
 - Node-red
+- Technical diagram
