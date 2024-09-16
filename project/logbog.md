@@ -21,7 +21,7 @@
 
 ### 9-09-2024
 
-- Virksomhedsbesøg ved
+- Virksomhedsbesøg ved OptiLogic
 
 ### 10-09-2024
 
