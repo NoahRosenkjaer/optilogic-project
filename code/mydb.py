@@ -18,14 +18,23 @@ mycursor = mydb.cursor()
 
 ''' Lav et table '''
 
+users_test = """CREATE TABLE users (
+                   username VARCHAR(15) PRIMARY KEY,
+                   password VARCHAR(30),
+                   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                   updated_at ON UPDATE CURRENT_TIMESTAMP
+                   FOREIGN KEY (username) REFERENCES userinfo(id)
+                   )"""
 
-brugere_test = """CREATE TABLE customers (
+userinfo_test = """CREATE TABLE userinfo (
                    id INT AUTO_INCREMENT PRIMARY KEY,
-                   forename VARCHAR(20) NOT NULL,
-                   surname VARCHAR(20) NOT NULL,
+                   firstname VARCHAR(20) NOT NULL,
+                   lastname VARCHAR(20) NOT NULL,
                    address VARCHAR(20) NOT NULL,
                    postalcode VARCHAR(4) NOT NULL,
-                   phone VARCHAR(8) NOT NULL
+                   phone VARCHAR(8) NOT NULL,
+                   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                   updated_at ON UPDATE CURRENT_TIMESTAMP
                    )"""
 
 #mycursor.execute(brugere_test)
@@ -74,8 +83,6 @@ def std_kundequery(table: str, coulumn: str, adress: str):
 
 #std_query("prices", "dato", "price", "all")
 #std_insert("prices", "dato", "price", "16-09-2024", "1.05")
-
-
 
 # Disconnect
 mydb.close()
