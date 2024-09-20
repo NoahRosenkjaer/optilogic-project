@@ -19,11 +19,13 @@ mycursor = mydb.cursor()
 ''' Lav et table '''
 
 users_test = """CREATE TABLE users (
-                   username VARCHAR(15) PRIMARY KEY,
+                   id INT AUTO_INCREMENT PRIMARY KEY,
+                   username VARCHAR(15),
                    password VARCHAR(30),
+                   user_id
                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                    updated_at ON UPDATE CURRENT_TIMESTAMP
-                   FOREIGN KEY (username) REFERENCES userinfo(id)
+                   FOREIGN KEY (user_id) REFERENCES userinfo(id)
                    )"""
 
 userinfo_test = """CREATE TABLE userinfo (
@@ -78,7 +80,6 @@ def std_kundequery(table: str, coulumn: str, adress: str):
 
     for x in myresult:
         print(x)
-
 
 
 #std_query("prices", "dato", "price", "all")
