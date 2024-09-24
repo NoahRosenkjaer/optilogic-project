@@ -22,7 +22,7 @@ users_test = """CREATE TABLE users (
                    id INT AUTO_INCREMENT PRIMARY KEY,
                    username VARCHAR(15),
                    password VARCHAR(30),
-                   user_id
+                   user_id INT AUTO_INCREMENT,
                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                    updated_at ON UPDATE CURRENT_TIMESTAMP
                    FOREIGN KEY (user_id) REFERENCES userinfo(id)
