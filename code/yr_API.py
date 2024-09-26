@@ -23,4 +23,4 @@ forecast = my_client.get_forecast(location.latitude, location.longitude)
 skyet = forecast.now().details.cloud_area_fraction_medium
 wind_speed = forecast.now().details.wind_speed
 
-print(f"Odense:\nSkyet: {skyet} %\nVind hastighed: {wind_speed} m/s")
+print(f"Skyet: {skyet} %\nVind hastighed: {wind_speed} m/s")

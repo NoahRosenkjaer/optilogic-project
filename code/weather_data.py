@@ -30,10 +30,3 @@ observations = client.get_observations(
     to_time=datetime(2024, 9, 10),
     limit=1000)
 
-
-list_of_obs = []
-for observation in observations:
-    list_of_obs.append(observation['properties']['value']) 
-
-
-print(list_of_obs)

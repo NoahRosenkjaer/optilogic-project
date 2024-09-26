@@ -14,13 +14,17 @@
 
 ```pip install yr_weather```
 
+- DMI
+
+```pip install dmi-open-data```
+
 - geopy
 
 ```pip install geopy```
 
 - dotenv
 
-```pip install dotenv```
+```pip install python-dotenv```
 
 - mysql
 
