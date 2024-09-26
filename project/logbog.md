@@ -33,3 +33,9 @@
 - MySQL database
 - Node-red
 - Technical diagram
+
+
+### 26-09-2024
+
+- Ændring på timeline og work breakdown
+- Hjemme arbejde (azure cloud)
