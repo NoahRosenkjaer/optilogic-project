@@ -1,13 +1,12 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import mysql.connector
 import requests
 
 # Constant values
 DATE_DATA = datetime.now().isoformat()[0:11] + '00:00:00'
-TIME = datetime.now().strftime('%H')
-DATE = datetime.now().strftime('%d-%m-%Y')
-TODAY = "https://api.energifyn.dk/api/graph/consumptionprice?date=" + DATE 
-TOMORROW = "https://api.energifyn.dk/api/graph/consumptionprice?date=" + DATE
+DATE = datetime.now()
+TODAY = "https://api.energifyn.dk/api/graph/consumptionprice?date=" + DATE.strftime('%d-%m-%Y')
+TOMORROW = "https://api.energifyn.dk/api/graph/consumptionprice?date=" + (DATE + timedelta(days=1)).strftime('%d-%m-%Y')
 
 '''
 # Connect to database
@@ -24,14 +23,18 @@ if (mydb.is_connected()) == True:
 mycursor = mydb.cursor()
 '''
 
-def fetch() -> dict:
+# fetch price data from api
+def fetch(day) -> dict:
+    
+    # Try to fetch data and return it, on error print it
     try: 
-        response = requests.get(TODAY)
+        response = requests.get(day)
         data = response.json()
     except  ConnectionError as e:
         print(f"Error: {e}")
     return data
 
+# Extracts the wanted data and returns it in 2 lists
 def format(data, date):
     east, west = [], []
     for hour in range(0, 24):
@@ -43,7 +46,8 @@ def format(data, date):
             west.append(data['westPrices'][date]['prices'][hour]['price'])
     return east, west
 
-def insert_prices3(west, east, time): #Insert én række i et table
+# Insert into database
+def insert_prices3(west, east, time):
     sql = f"INSERT INTO prices3 (west, east, time) VALUES (%s, %s, %s)"
     val = (west, east, time)
     print(sql)
@@ -53,15 +57,14 @@ def insert_prices3(west, east, time): #Insert én række i et table
     mydb.commit()
     print("1 record inserted, ID:", mycursor.lastrowid)
 
-data = fetch()
-eastPrice, westPrice = format(data, DATE_DATA)
-data.clear()
+# Calls format and fetch to return 2 lists
+eastPrice, westPrice = format(fetch(TODAY), DATE_DATA)
 
+# Insert prices from all 24 hours into database
 for hour in range(0, 24):
     if hour < 10:
-        insert_prices3(westPrice[hour], eastPrice[hour], f'0{hour}')
-        #print(westPrice[hour], eastPrice[hour], f"{dagsdato} 0{hour}")
+        #insert_prices3(westPrice[hour], eastPrice[hour], f'0{hour}')
+        print(westPrice[hour], eastPrice[hour], f'0{hour}')
     else:
-        insert_prices3(westPrice[hour], eastPrice[hour], hour)
-        #print(westPrice[hour], eastPrice[hour], f"{dagsdato} {hour}")
-    
+        #insert_prices3(westPrice[hour], eastPrice[hour], hour)
+        print(westPrice[hour], eastPrice[hour], hour)
