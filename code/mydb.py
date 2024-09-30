@@ -35,7 +35,7 @@ userinfo_test = """CREATE TABLE userinfo (
                    lastname VARCHAR(20) NOT NULL,
                    address VARCHAR(20) NOT NULL,
                    postalcode VARCHAR(4) NOT NULL,
-                   phone VARCHAR(8) NOT NULL,
+                   phone VARCHAR(8) NOT NULL UNIQUE,
                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                    )"""
@@ -44,12 +44,13 @@ userinfo_test1 = "CREATE TABLE userinfo (info_id INT AUTO_INCREMENT PRIMARY KEY,
 
 ny_priser = """CREATE TABLE prices3 (
             id INT AUTO_INCREMENT PRIMARY KEY, 
-            west float, 
-            east float, 
-            datotid VARCHAR(16) UNIQUE)"""
+            west FLOAT, 
+            east FLOAT, 
+            time VARCHAR(2),
+            dato DATE DEFAULT NOW())"""
 
 #print(userinfo_test)
-#mycursor.execute(userinfo_test)
+mycursor.execute(ny_priser)
 
 """ Funktioner til alt muligt """
 
@@ -69,13 +70,13 @@ def insert_prices3(west, east, datotid): #Insert én række i et table
     print("1 record inserted, ID:", mycursor.lastrowid)
 
 
-def std_query(table: str, coulum_1: str, coulumn_2: str, all: str,): #Fetcher kolonner fra et table.
+def std_query(table: str, coulum_1: str, all: str,): #Fetcher kolonner fra et table.
     
     if all == "all":
         query = f"SELECT * FROM {table}"
 
     elif all == "0":
-        query = f"SELECT {coulum_1},{coulumn_2} FROM {table}" 
+        query = f"SELECT {coulum_1} FROM {table}" 
     print(query)
 
     mycursor.execute(query)
@@ -106,22 +107,19 @@ def insert_userinfo(firstname_1, lastname_1, address_1, postalcode_1, phone_1):
     mydb.commit()
     print("1 record inserted, ID:", mycursor.lastrowid)
 
-
-
 dagsdato = dt.datetime.now().strftime("%d-%m-%Y %H")
-#std_query("prices", "west", "east", "all")
-insert_prices3("6.69", "9.69", f"{dagsdato}")
-#insert_userinfo("Rasmus", "Joergensen", "Bredstedgade 36", "5000", "41191137")
+#std_query("prices3", "west", "0")
+#insert_prices3("6.69", "9.69", f"{dagsdato}")
+#insert_userinfo("Rasmus", "Jørgensen", "Bredstedgade 36", "5000", "41191137")
 #std_kundequery("userinfo", "Bredstedgade 36")
 
-'''sql = "INSERT INTO prices (west, east, datotid) VALUES (%s, %s, %s)"
-val = ("1.05", "5.05", f"{dagsdato}")
-mycursor.execute(sql, val)'''
-
-# Disconnect
+""" Disconnect """
 #mydb.commit()
 mydb.close()
 
+
+
+### Notater
 """Pris west + øst + timetal + dato/tid(manuel indsættelse)(primarykey)"""
 """Skydække, vindhastighed"""
 
