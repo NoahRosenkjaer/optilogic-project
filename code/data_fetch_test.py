@@ -48,12 +48,6 @@ def fetch() -> dict:
     data = clean(data)
     return data
 
-def get(h: int, compas: str, data: dict, date: str) -> dict:
-    if compas == "east":
-        print(data['eastPrices'][str(date)]['prices'][h]) 
-    else:
-        print(data['westPrices'][str(date)]['prices'][h])
-
 def format(data, date):
     east, west = [], []
     for hour in range(0, 24):
@@ -64,8 +58,6 @@ def format(data, date):
             east.append(data['eastPrices'][date]['prices'][hour]['price'])
             west.append(data['westPrices'][date]['prices'][hour]['price'])
     return east, west
-
-
 
 def insert_prices3(west, east, datotid): #Insert én række i et table
     sql = f"INSERT INTO prices3 (west, east, datotid) VALUES (%s, %s, %s)"
@@ -83,8 +75,11 @@ dagsdato = datetime.now().strftime("%d-%m-%Y")
 data = fetch()
 eastPrice, westPrice = format(data, DATE_DATA)
 
-print(dagsdato)
-
 for hour in range(0, 24):
-    insert_prices3(westPrice[hour], eastPrice[hour], f"{dagsdato} {hour}")
-    #print(westPrice[hour], eastPrice[hour], f"{dagsdato} {hour}")
+    if hour < 10:
+        insert_prices3(westPrice[hour], eastPrice[hour], f"{dagsdato} 0{hour}")
+        #print(westPrice[hour], eastPrice[hour], f"{dagsdato} 0{hour}")
+    else:
+        insert_prices3(westPrice[hour], eastPrice[hour], f"{dagsdato} {hour}")
+        #print(westPrice[hour], eastPrice[hour], f"{dagsdato} {hour}")
+    
