@@ -1,4 +1,6 @@
 import mysql.connector
+import datetime as dt
+
 
 # Connection
 mydb = mysql.connector.connect(
@@ -19,37 +21,48 @@ mycursor = mydb.cursor()
 ''' Lav et table '''
 
 users_test = """CREATE TABLE users (
-                   id INT AUTO_INCREMENT PRIMARY KEY,
+                   user_id INT AUTO_INCREMENT PRIMARY KEY,
                    username VARCHAR(15),
                    password VARCHAR(30),
-                   user_id INT AUTO_INCREMENT,
+                   info_id FOREIGN KEY REFERENCES userinfo(info_id)
                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                    updated_at ON UPDATE CURRENT_TIMESTAMP
-                   FOREIGN KEY (user_id) REFERENCES userinfo(id)
                    )"""
 
 userinfo_test = """CREATE TABLE userinfo (
-                   id INT AUTO_INCREMENT PRIMARY KEY,
+                   info_id INT AUTO_INCREMENT PRIMARY KEY,
                    firstname VARCHAR(20) NOT NULL,
                    lastname VARCHAR(20) NOT NULL,
                    address VARCHAR(20) NOT NULL,
                    postalcode VARCHAR(4) NOT NULL,
                    phone VARCHAR(8) NOT NULL,
                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                   updated_at ON UPDATE CURRENT_TIMESTAMP
+                   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                    )"""
 
-#mycursor.execute(brugere_test)
-#mycursor.execute("CREATE TABLE prices (dato VARCHAR(255), price VARCHAR(255))")
+userinfo_test1 = "CREATE TABLE userinfo (info_id INT AUTO_INCREMENT PRIMARY KEY, firstname VARCHAR(20) NOT NULL, lastname VARCHAR(20) NOT NULL, address VARCHAR(20) NOT NULL, postalcode VARCHAR(4) NOT NULL, phone VARCHAR(8) NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)"
+
+ny_priser = """CREATE TABLE prices3 (
+            id INT AUTO_INCREMENT PRIMARY KEY, 
+            west float, 
+            east float, 
+            datotid VARCHAR(16) UNIQUE)"""
+
+#print(userinfo_test)
+#mycursor.execute(userinfo_test)
+
+""" Funktioner til alt muligt """
 
 def vis():
     mycursor.execute("SHOW DATABASES")
     for x in mycursor:
       print(x)
 
-def std_insert(table: str, coulum_1: str, coulum_2: str, value_1: str, value_2: str): #Insert én række i et table
-    sql = f"INSERT INTO {table} ({coulum_1}, {coulum_2}) VALUES (%s, %s)"
-    val = (f"{value_1}", f"{value_2}")
+def std_insert(table, coulum_1, coulum_2, coulum_3, value_1, value_2, value_3): #Insert én række i et table
+    sql = f"INSERT INTO {table} ({coulum_1}, {coulum_2}, {coulum_3}) VALUES (%s, %s, %s)"
+    val = (value_1, value_2, value_3)
+    print(sql)
+    print(val)
 
     mycursor.execute(sql,val)
     mydb.commit()
@@ -71,7 +84,7 @@ def std_query(table: str, coulum_1: str, coulumn_2: str, all: str,): #Fetcher ko
     for x in myresult:
         print(x)
 
-def std_kundequery(table: str, coulumn: str, adress: str):
+def std_kundequery(table: str, adress: str):
     
     sql = f"SELECT * FROM {table} WHERE address ='{adress}'"
 
@@ -81,9 +94,42 @@ def std_kundequery(table: str, coulumn: str, adress: str):
     for x in myresult:
         print(x)
 
+def insert_userinfo(firstname_1, lastname_1, address_1, postalcode_1, phone_1):
 
-#std_query("prices", "dato", "price", "all")
-#std_insert("prices", "dato", "price", "16-09-2024", "1.05")
+    sql = f"INSERT INTO userinfo (firstname, lastname, address, postalcode, phone) VALUES (%s, %s, %s, %s, %s)"
+    val = (firstname_1, lastname_1, address_1, postalcode_1, phone_1)
+
+    print(sql)
+    print(val)
+
+    mycursor.execute(sql,val)
+    mydb.commit()
+    print("1 record inserted, ID:", mycursor.lastrowid)
+
+
+
+dagsdato = dt.datetime.now().strftime("%d-%m-%Y %H")
+#std_query("prices", "west", "east", "all")
+#std_insert("prices2", "west", "east", "datotid", "2.2", "5.2", f"{dagsdato}")
+#insert_userinfo("Rasmus", "Joergensen", "Bredstedgade 36", "5000", "41191137")
+#std_kundequery("userinfo", "Bredstedgade 36")
+
+'''sql = "INSERT INTO prices (west, east, datotid) VALUES (%s, %s, %s)"
+val = ("1.05", "5.05", f"{dagsdato}")
+mycursor.execute(sql, val)'''
 
 # Disconnect
+#mydb.commit()
 mydb.close()
+
+"""Pris west + øst + timetal + dato/tid(manuel indsættelse)(primarykey)"""
+"""Skydække, vindhastighed"""
+
+
+'''testtt = mycursor.execute("SHOW TABLES;")
+myresult = mycursor.fetchall()
+
+for x in myresult:
+    print(x)'''
+
+#docker exec -it OptiLogic mysql -u root -p
