@@ -43,9 +43,9 @@ def format(data, date):
             west.append(data['westPrices'][date]['prices'][hour]['price'])
     return east, west
 
-def insert_prices3(west, east, datotid): #Insert én række i et table
-    sql = f"INSERT INTO prices3 (west, east, datotid) VALUES (%s, %s, %s)"
-    val = (west, east, datotid)
+def insert_prices3(west, east, time): #Insert én række i et table
+    sql = f"INSERT INTO prices3 (west, east, time) VALUES (%s, %s, %s)"
+    val = (west, east, time)
     print(sql)
     print(val)
 
@@ -59,8 +59,9 @@ data.clear()
 
 for hour in range(0, 24):
     if hour < 10:
-        #insert_prices3(westPrice[hour], eastPrice[hour], hour, f"{DATE}")
-        print(westPrice[hour], eastPrice[hour], hour, f"{DATE}")
+        insert_prices3(westPrice[hour], eastPrice[hour], f'0{hour}')
+        #print(westPrice[hour], eastPrice[hour], f"{dagsdato} 0{hour}")
     else:
-        #insert_prices3(westPrice[hour], eastPrice[hour], hour, f"{DATE}")
-        print(westPrice[hour], eastPrice[hour], hour, f"{DATE}")
+        insert_prices3(westPrice[hour], eastPrice[hour], hour)
+        #print(westPrice[hour], eastPrice[hour], f"{dagsdato} {hour}")
+    
