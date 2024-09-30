@@ -9,9 +9,9 @@ timenr = (dt.datetime.now().strftime('%H'))
 dato = datetime.datetime.now().isoformat()
 dato1 = dato[0:11] + "00:00:00"
 
-def fetch(h,x):
+def fetch(h, x):
     try:
-        responce =requests.get(URL)
+        responce = requests.get(URL)
         data = responce.json()
 
         if x == "west":
