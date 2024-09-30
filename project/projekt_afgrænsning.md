@@ -4,4 +4,10 @@ Problemstillingen er at OptiLogic ikke vil micro-manage sine el enheder for at s
 ### Afgrænsning
 - Vi vil have en mySQL database til at køre, som kan få data, og man skal kunne få data fra den.
 - Vi vil opsætte en esp32 som kan hente data og sende det videre.
-- En form for interface 
+- En form for interface
+
+### Afgrænsning
+
+- SQL database for strømpris, tarif og vejrdata
+- ESP32 der kan hente data fra database og agere baseret på denne
+- NodeRed der facilitere kommunikationen og interface
