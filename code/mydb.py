@@ -58,9 +58,9 @@ def vis():
     for x in mycursor:
       print(x)
 
-def std_insert(table, coulum_1, coulum_2, coulum_3, value_1, value_2, value_3): #Insert én række i et table
-    sql = f"INSERT INTO {table} ({coulum_1}, {coulum_2}, {coulum_3}) VALUES (%s, %s, %s)"
-    val = (value_1, value_2, value_3)
+def insert_prices3(west, east, datotid): #Insert én række i et table
+    sql = f"INSERT INTO prices3 (west, east, datotid) VALUES (%s, %s, %s)"
+    val = (west, east, datotid)
     print(sql)
     print(val)
 
@@ -110,7 +110,7 @@ def insert_userinfo(firstname_1, lastname_1, address_1, postalcode_1, phone_1):
 
 dagsdato = dt.datetime.now().strftime("%d-%m-%Y %H")
 #std_query("prices", "west", "east", "all")
-#std_insert("prices2", "west", "east", "datotid", "2.2", "5.2", f"{dagsdato}")
+insert_prices3("6.69", "9.69", f"{dagsdato}")
 #insert_userinfo("Rasmus", "Joergensen", "Bredstedgade 36", "5000", "41191137")
 #std_kundequery("userinfo", "Bredstedgade 36")
 
