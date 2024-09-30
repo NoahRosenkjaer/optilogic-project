@@ -39,3 +39,9 @@
 
 - Ændring på timeline og work breakdown
 - Hjemme arbejde (azure cloud)
+
+### 30-09-2024
+
+- Oprettelse af pris og kunde databaser
+- NodeRed opsætning og test
+- Indsættelse i DB med API
