@@ -86,5 +86,5 @@ eastPrice, westPrice = format(data, DATE_DATA)
 print(dagsdato)
 
 for hour in range(0, 24):
-    insert_prices3(westPrice[hour], eastPrice[hour], f"{dagsdato + hour}")
+    insert_prices3(westPrice[hour], eastPrice[hour], f"{dagsdato} {hour}")
     #print(westPrice[hour], eastPrice[hour], f"{dagsdato} {hour}")
