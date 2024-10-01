@@ -7,7 +7,7 @@ DATE_DATA = datetime.now().isoformat()[0:11] + '00:00:00'
 DATE = datetime.now()
 TODAY = "https://api.energifyn.dk/api/graph/consumptionprice?date=" + DATE.strftime('%d-%m-%Y')
 TOMORROW = "https://api.energifyn.dk/api/graph/consumptionprice?date=" + (DATE + timedelta(days=1)).strftime('%d-%m-%Y')
-
+SQL_DATO = datetime.now().strftime("%Y-%m-%d") #("%Y-%m-%d") ("%d-%m-%Y")
 
 # Connect to database
 mydb = mysql.connector.connect(
@@ -46,9 +46,9 @@ def format(data, date):
     return east, west
 
 # Insert into database
-def insert_prices3(west, east, time):
-    sql = f"INSERT INTO prices3 (west, east, time) VALUES (%s, %s, %s)"
-    val = (west, east, time)
+def insert_prices3(west, east, time, dato):
+    sql = f"INSERT INTO prices3 (west, east, time, dato) VALUES (%s, %s, %s, %s)"
+    val = (west, east, time, dato)
     print(sql)
     print(val)
 
@@ -62,8 +62,8 @@ eastPrice, westPrice = format(fetch(TODAY), DATE_DATA)
 # Insert prices from all 24 hours into database
 for hour in range(0, 24):
     if hour < 10:
-        #insert_prices3(westPrice[hour], eastPrice[hour], f'0{hour}')
-        print(westPrice[hour], eastPrice[hour], f'0{hour}')
+        insert_prices3(westPrice[hour], eastPrice[hour], f'0{hour}',f"{SQL_DATO}")
+        print(westPrice[hour], eastPrice[hour], f'0{hour}',f"{SQL_DATO}")
     else:
-        #insert_prices3(westPrice[hour], eastPrice[hour], hour)
-        print(westPrice[hour], eastPrice[hour], hour)
+        insert_prices3(westPrice[hour], eastPrice[hour], hour,f"{SQL_DATO}")
+        print(westPrice[hour], eastPrice[hour], hour,f"{SQL_DATO}")

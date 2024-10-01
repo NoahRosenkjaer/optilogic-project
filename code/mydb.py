@@ -47,10 +47,15 @@ ny_priser = """CREATE TABLE prices3 (
             west FLOAT, 
             east FLOAT, 
             time VARCHAR(2),
-            dato DATE DEFAULT NOW())"""
+            dato DATE
+            )"""
+
+"""Til efter prices3 er oprettet"""
+#ALTER TABLE prices3 
+#ADD UNIQUE INDEX idx_unique_date_time (dato, time);
 
 #print(userinfo_test)
-mycursor.execute(ny_priser)
+#mycursor.execute(ny_priser)
 
 """ Funktioner til alt muligt """
 
@@ -59,9 +64,9 @@ def vis():
     for x in mycursor:
       print(x)
 
-def insert_prices3(west, east, datotid): #Insert én række i et table
-    sql = f"INSERT INTO prices3 (west, east, datotid) VALUES (%s, %s, %s)"
-    val = (west, east, datotid)
+def insert_prices3(west, east, time, dato): #Insert én række i et table
+    sql = f"INSERT INTO prices3 (west, east, time, dato) VALUES (%s, %s, %s, %s)"
+    val = (west, east, time, dato)
     print(sql)
     print(val)
 
@@ -85,7 +90,7 @@ def std_query(table: str, coulum_1: str, all: str,): #Fetcher kolonner fra et ta
     for x in myresult:
         print(x)
 
-def std_kundequery(table: str, adress: str):
+def std_kundequery(table: str, adress: str): # Find et row
     
     sql = f"SELECT * FROM {table} WHERE address ='{adress}'"
 
@@ -95,7 +100,7 @@ def std_kundequery(table: str, adress: str):
     for x in myresult:
         print(x)
 
-def insert_userinfo(firstname_1, lastname_1, address_1, postalcode_1, phone_1):
+def insert_userinfo(firstname_1, lastname_1, address_1, postalcode_1, phone_1): # Insæt data i userinfo
 
     sql = f"INSERT INTO userinfo (firstname, lastname, address, postalcode, phone) VALUES (%s, %s, %s, %s, %s)"
     val = (firstname_1, lastname_1, address_1, postalcode_1, phone_1)
@@ -107,9 +112,9 @@ def insert_userinfo(firstname_1, lastname_1, address_1, postalcode_1, phone_1):
     mydb.commit()
     print("1 record inserted, ID:", mycursor.lastrowid)
 
-dagsdato = dt.datetime.now().strftime("%d-%m-%Y %H")
+dagsdato = dt.datetime.now().strftime("%Y-%m-%d") #("%Y-%m-%d") ("%d-%m-%Y")
 #std_query("prices3", "west", "0")
-#insert_prices3("6.69", "9.69", f"{dagsdato}")
+#insert_prices3("6.69", "9.69", "01", f"{dagsdato}")
 #insert_userinfo("Rasmus", "Jørgensen", "Bredstedgade 36", "5000", "41191137")
 #std_kundequery("userinfo", "Bredstedgade 36")
 
