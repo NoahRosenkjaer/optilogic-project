@@ -8,7 +8,7 @@ DATE = datetime.now()
 TODAY = "https://api.energifyn.dk/api/graph/consumptionprice?date=" + DATE.strftime('%d-%m-%Y')
 TOMORROW = "https://api.energifyn.dk/api/graph/consumptionprice?date=" + (DATE + timedelta(days=1)).strftime('%d-%m-%Y')
 
-'''
+
 # Connect to database
 mydb = mysql.connector.connect(
   host="localhost",
@@ -21,7 +21,6 @@ if (mydb.is_connected()) == True:
     print("Connected to database")
 
 mycursor = mydb.cursor()
-'''
 
 # fetch price data from api
 def fetch(day) -> dict:
