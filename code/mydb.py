@@ -125,7 +125,6 @@ mydb.close()
 
 
 ### Notater
-"""Pris west + øst + timetal + dato/tid(manuel indsættelse)(primarykey)"""
 """Skydække, vindhastighed"""
 
 
