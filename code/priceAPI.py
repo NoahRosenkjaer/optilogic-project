@@ -46,9 +46,19 @@ def format(data, date):
     return east, west
 
 # Insert into database
-def insert_prices3(west, east, time, dato):
-    sql = f"INSERT INTO prices3 (west, east, time, dato) VALUES (%s, %s, %s, %s)"
-    val = (west, east, time, dato)
+def westprices(west, time, dato):
+    sql = f"INSERT INTO westprices (west, time, dato) VALUES (%s, %s, %s)"
+    val = (west, time, dato)
+    print(sql)
+    print(val)
+
+    mycursor.execute(sql,val)
+    mydb.commit()
+    print("1 record inserted, ID:", mycursor.lastrowid)
+
+def eastprices(east, time, dato):
+    sql = f"INSERT INTO eastprices (east, time, dato) VALUES (%s, %s, %s)"
+    val = (east, time, dato)
     print(sql)
     print(val)
 
@@ -62,6 +72,8 @@ eastPrice, westPrice = format(fetch(TODAY), DATE_DATA)
 # Insert prices from all 24 hours into database
 for hour in range(0, 24):
     if hour < 10:
-        insert_prices3(westPrice[hour], eastPrice[hour], f'0{hour}',f"{SQL_DATO}")
+        westprices(westPrice[hour], f'0{hour}',f"{SQL_DATO}")
+        eastprices(eastPrice[hour], f'0{hour}',f"{SQL_DATO}")
     else:
-        insert_prices3(westPrice[hour], eastPrice[hour], hour,f"{SQL_DATO}")
+        westprices(westPrice[hour], hour,f"{SQL_DATO}")
+        eastprices(eastPrice[hour], hour,f"{SQL_DATO}")
