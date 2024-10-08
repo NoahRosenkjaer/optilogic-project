@@ -29,3 +29,7 @@
 - mysql
 
 ```pip install mysql-connector-python```
+
+- MQTT
+
+```pip install paho-mqtt```
