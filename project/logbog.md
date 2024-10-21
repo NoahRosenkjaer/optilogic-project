@@ -45,3 +45,8 @@
 - Oprettelse af pris og kunde databaser
 - NodeRed opsætning og test
 - Indsættelse i DB med API
+
+### 07-10-2024
+
+- NodeRed forbindelse med API
+- MQTT sikkerhed (logon)
