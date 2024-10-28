@@ -45,3 +45,12 @@
 - Oprettelse af pris og kunde databaser
 - NodeRed opsætning og test
 - Indsættelse i DB med API
+
+
+### 22-10-2024
+
+- arbejde med docker
+
+### 28-10-2024
+
+- Opsat TLS encryption til mqtt
