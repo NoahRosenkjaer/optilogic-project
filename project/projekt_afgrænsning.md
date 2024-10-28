@@ -8,7 +8,7 @@ Problemstillingen er at OptiLogic ikke vil micro-manage sine el enheder for at s
 
 ### Afgrænsning_2
 
-- SQL database for strømpris, tarif og vejrdata
+- SQL database for strømpris og vejrdata
 - ESP32 der kan hente data fra database og agere baseret på denne
 - NodeRed der facilitere kommunikationen og interface
 - TLS kryptering på MQTT kommunikation
