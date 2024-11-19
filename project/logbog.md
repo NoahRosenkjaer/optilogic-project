@@ -50,3 +50,8 @@
 
 - NodeRed forbindelse med API
 - MQTT sikkerhed (logon)
+
+### 19-11-2024
+
+- NodeRed med MQTT og UI
+- ESP32 og MQTT
