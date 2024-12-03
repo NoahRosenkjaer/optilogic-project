@@ -61,16 +61,25 @@ except Exception as e:
 # Main loop
 while True:
     if nic:
-        # Printer modtagede beskeder:
-        mqtt_client.check_msg()  
+        try:
+            mqtt_client.connect()
+            print("Connected to MQTT Broker!")
+    
+        # Subscribe to the topic
+            mqtt_client.subscribe(myTopic)
+
+        except Exception as e:
+            print(f"Failed to connect to the MQTT broker: {e}") 
         
         if mqtt_client.checkmsg() == "tænd":
             print("Tænd for varmpepumpekode")
         else:
             print("Sluk varmepumpe")
 
-    else:
+    elif not nic:
         print("No Ethernet connection. Attempting to reconnect...")
         nic = connect_ethernet()
     
         time.sleep(10)  # Wait for 10 seconds before next checkimport network
+    else:
+        nic = connect_ethernet()
