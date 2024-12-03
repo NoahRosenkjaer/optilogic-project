@@ -5,7 +5,7 @@ brokerIP        = "pi"
 brokerPort      = 8883
 brokerKeepAlive = 60
 
-myTopic   = "Optilogic/aktivering"
+myTopic   = "Optilogic/user/action"
 
 # Replace with your actual username and password
 username = "rasmus"

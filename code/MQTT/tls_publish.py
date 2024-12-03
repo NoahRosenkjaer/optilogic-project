@@ -6,7 +6,7 @@ brokerIP        = "pi"
 brokerPort      = 8883
 brokerKeepAlive = 60
 
-myTopic   = "Optilogic/aktivering"
+myTopic   = "Optilogic/user/action"
 myPayload = random.randint(0, 99)
 myQoS     = 0
 myRetain  = True
