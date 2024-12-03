@@ -35,7 +35,7 @@ def on_message(topic, msg):
 brokerIP = "192.168.10.2"
 brokerPort = 1883
 
-myTopic = b"Plant1/temperature"
+myTopic = b"Optilogic/aktivering"
 client_id = b"ESP32_Client"
 
 # Initial connection
@@ -64,7 +64,7 @@ while True:
         # Printer modtagede beskeder:
         mqtt_client.check_msg()  
         
-        if mqtt_client.checkmsg() == "Tænd":
+        if mqtt_client.checkmsg() == "tænd":
             print("Tænd for varmpepumpekode")
         else:
             print("Sluk varmepumpe")
@@ -73,4 +73,4 @@ while True:
         print("No Ethernet connection. Attempting to reconnect...")
         nic = connect_ethernet()
     
-    time.sleep(10)  # Wait for 10 seconds before next checkimport network
+        time.sleep(10)  # Wait for 10 seconds before next checkimport network

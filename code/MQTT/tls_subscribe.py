@@ -5,7 +5,7 @@ brokerIP        = "pi"
 brokerPort      = 8883
 brokerKeepAlive = 60
 
-myTopic   = "Plant1/temperature"
+myTopic   = "Optilogic/aktivering"
 
 # Replace with your actual username and password
 username = "rasmus"

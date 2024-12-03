@@ -36,7 +36,7 @@ def on_message(topic, msg):
 brokerIP = "192.168.10.2"
 brokerPort = 1883
 
-myTopic = b"Plant1/temperature"
+myTopic = b"Optilogic/aktivering"
 client_id = b"ESP32_Client"
 
 # Initial connection
