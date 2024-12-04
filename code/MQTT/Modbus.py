@@ -32,8 +32,10 @@ def on_message(topic, msg):
     print(f"Besked: '{msg.decode()}' på topic '{topic.decode()}'")
     if msg == b'turn_on':
         print("Tænd for varmepumpekode")
+        led.on()
     elif msg == b'turn_off':
         print("Sluk varmepumpe")
+        led.off()
 
 # MQTT configuration
 brokerIP = "192.168.11.2"
@@ -43,6 +45,9 @@ mqtt_password = "1234"
 
 myTopic = b"Optilogic/user/action"
 client_id = b"ESP32_Client"
+
+led = Pin(0, Pin.OUT)
+
 
 nic = connect_ethernet()
 
