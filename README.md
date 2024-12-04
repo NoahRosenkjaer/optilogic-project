@@ -33,3 +33,9 @@
 - MQTT
 
 ```pip install paho-mqtt```
+
+#### Programs
+
+- OpenSSL
+
+```sudo apt install openssl```
