@@ -11,7 +11,7 @@ def connect_ethernet():
     nic.active(True)
     
     # Statisk konfiguration
-    nic.ifconfig(('192.168.13.2', '255.255.255.0', '192.168.13.1', '8.8.8.8'))
+    nic.ifconfig(('192.168.12.2', '255.255.255.0', '192.168.12.1', '8.8.8.8'))
     
     while not nic.isconnected():
         print("Forbinder til Ethernet...")
@@ -30,24 +30,29 @@ def check_connection(nic):
 # Callback function for when a message is received
 def on_message(topic, msg):
     print(f"Besked: '{msg.decode()}' på topic '{topic.decode()}'")
+    if msg == b'turn_on':
+        print("Tænd for varmepumpekode")
+    elif msg == b'turn_off':
+        print("Sluk varmepumpe")
 
 # MQTT configuration
-brokerIP = "192.168.10.2"
+brokerIP = "192.168.11.2"
 brokerPort = 1883
+mqtt_user = "rasmus"
+mqtt_password = "1234"
 
 myTopic = b"Optilogic/user/action"
 client_id = b"ESP32_Client"
 
-# Initial connection
 nic = connect_ethernet()
 
-# Initialize MQTT client
-mqtt_client = MQTTClient(client_id, brokerIP, port=brokerPort)
+# Initialiser MQTT client
+mqtt_client = MQTTClient(client_id, brokerIP, port=brokerPort, user=mqtt_user, password=mqtt_password)
 
-# Set the callback function for receiving messages
+# Callback funktion
 mqtt_client.set_callback(on_message)
 
-# Connect to the MQTT broker
+# Connect til MQTT Broker
 try:
     mqtt_client.connect()
     print("Connected to MQTT Broker!")
@@ -58,28 +63,30 @@ try:
 except Exception as e:
     print(f"Failed to connect to the MQTT broker: {e}")
 
+print("VARMEPUMPE = SLUKKET")
 # Main loop
 while True:
-    if nic:
+    if nic.isconnected():
         try:
-            mqtt_client.connect()
-            print("Connected to MQTT Broker!")
-    
-        # Subscribe to the topic
-            mqtt_client.subscribe(myTopic)
-
+            mqtt_client.check_msg()
         except Exception as e:
-            print(f"Failed to connect to the MQTT broker: {e}") 
-        
-        if mqtt_client.checkmsg() == "tænd":
-            print("Tænd for varmpepumpekode")
-        else:
-            print("Sluk varmepumpe")
+            print(f"Error checking messages: {e}")
+            # Attempt to reconnect
+            try:
+                mqtt_client.connect()
+            except:
+                print("Failed to reconnect to MQTT broker")
 
-    elif not nic:
-        print("No Ethernet connection. Attempting to reconnect...")
-        nic = connect_ethernet()
-    
-        time.sleep(10)  # Wait for 10 seconds before next checkimport network
     else:
-        nic = connect_ethernet()
+        print("Ingen internetforbindelse, forbinder...")
+        print("VARMEPUMPE = STANDARD MODE")
+        try:
+            nic = connect_ethernet()
+            if nic.isconnected():
+                mqtt_client.connect()
+                print("Forbundet til broker")
+                mqtt_client.subscribe(myTopic)
+                print("Subscriber")
+        except Exception as e:
+            print(f"Failed to connect to the MQTT broker: {e}")
+        time.sleep(2)
