@@ -3,6 +3,10 @@ import time
 from machine import Pin
 from umqtt.simple import MQTTClient
 
+#Simulere en varmepumpe
+led = Pin(2,Pin.OUT)
+led.off()
+
 def connect_ethernet():
     # Initialisering
     nic = network.LAN(mdc=Pin(23), mdio=Pin(18), power=Pin(12), phy_type=network.PHY_LAN8720, phy_addr=0)
@@ -15,7 +19,7 @@ def connect_ethernet():
     
     while not nic.isconnected():
         print("Forbinder til Ethernet...")
-        time.sleep(1)
+        time.sleep(2)
         
     print("Ethernet forbundet!")
     print("IP address:", nic.ifconfig()[0])
@@ -32,8 +36,10 @@ def on_message(topic, msg):
     print(f"Besked: '{msg.decode()}' på topic '{topic.decode()}'")
     if msg == b'turn_on':
         print("Tænd for varmepumpekode")
+        led.on() 
     elif msg == b'turn_off':
         print("Sluk varmepumpe")
+        led.off()
 
 # MQTT configuration
 brokerIP = "192.168.11.2"
@@ -80,6 +86,7 @@ while True:
     else:
         print("Ingen internetforbindelse, forbinder...")
         print("VARMEPUMPE = STANDARD MODE")
+        led.off()
         try:
             nic = connect_ethernet()
             if nic.isconnected():
@@ -89,4 +96,3 @@ while True:
                 print("Subscriber")
         except Exception as e:
             print(f"Failed to connect to the MQTT broker: {e}")
-        time.sleep(2)
