@@ -20,41 +20,6 @@ mycursor = mydb.cursor()
 
 ''' Lav et table '''
 
-users_test = """CREATE TABLE users (
-                   user_id INT AUTO_INCREMENT PRIMARY KEY,
-                   username VARCHAR(15),
-                   password VARCHAR(30),
-                   info_id FOREIGN KEY REFERENCES userinfo(info_id)
-                   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                   updated_at ON UPDATE CURRENT_TIMESTAMP
-                   )"""
-
-userinfo_test = """CREATE TABLE userinfo (
-                   info_id INT AUTO_INCREMENT PRIMARY KEY,
-                   firstname VARCHAR(20) NOT NULL,
-                   lastname VARCHAR(20) NOT NULL,
-                   address VARCHAR(20) NOT NULL,
-                   postalcode VARCHAR(4) NOT NULL,
-                   phone VARCHAR(8) NOT NULL UNIQUE,
-                   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-                   )"""
-
-userinfo_test1 = """
-CREATE TABLE userinfo (info_id INT AUTO_INCREMENT PRIMARY KEY, firstname VARCHAR(20) NOT NULL, 
-lastname VARCHAR(20) NOT NULL, address VARCHAR(20) NOT NULL, postalcode VARCHAR(4) NOT NULL, 
-phone VARCHAR(8) NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, 
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)"
-"""
-
-prices3 = """CREATE TABLE prices3 (
-            id INT AUTO_INCREMENT PRIMARY KEY, 
-            west FLOAT, 
-            east FLOAT, 
-            time VARCHAR(2),
-            dato DATE
-            )"""
-
 westprices = """CREATE TABLE westprices (
             id INT AUTO_INCREMENT PRIMARY KEY, 
             west FLOAT,  
@@ -140,7 +105,6 @@ dagsdato = dt.datetime.now().strftime("%Y-%m-%d") #("%Y-%m-%d") ("%d-%m-%Y")
 """ Disconnect """
 #mydb.commit()
 mydb.close()
-
 
 
 ### Notater
