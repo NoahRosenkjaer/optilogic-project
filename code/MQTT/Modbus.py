@@ -3,7 +3,7 @@ import time
 from machine import Pin
 from umqtt.simple import MQTTClient
 
-#Simulere en varmepumpe
+
 led = Pin(2,Pin.OUT)
 led.off()
 
@@ -35,10 +35,10 @@ def check_connection(nic):
 def on_message(topic, msg):
     print(f"Besked: '{msg.decode()}' på topic '{topic.decode()}'")
     if msg == b'turn_on':
-        print("Tænd for varmepumpekode")
+        print("Tænd for LED")
         led.on() 
     elif msg == b'turn_off':
-        print("Sluk varmepumpe")
+        print("Sluk for LED")
         led.off()
 
 # MQTT configuration
@@ -69,23 +69,20 @@ try:
 except Exception as e:
     print(f"Failed to connect to the MQTT broker: {e}")
 
-print("VARMEPUMPE = SLUKKET")
+
 # Main loop
 while True:
     if nic.isconnected():
         try:
             mqtt_client.check_msg()
         except Exception as e:
-            print(f"Error checking messages: {e}")
-            # Attempt to reconnect
+            print(f"Fejl med besked: {e}")
             try:
                 mqtt_client.connect()
             except Exception as e:
-                print("Failed to reconnect to MQTT broker")
-
+                print("Kunne ikke skabe forbindelse til MQTT broker")
     else:
         print("Ingen internetforbindelse, forbinder...")
-        print("VARMEPUMPE = STANDARD MODE")
         led.off()
         try:
             nic = connect_ethernet()
@@ -95,4 +92,4 @@ while True:
                 mqtt_client.subscribe(myTopic)
                 print("Subscriber")
         except Exception as e:
-            print(f"Failed to connect to the MQTT broker: {e}")
+            print(f"Kunne ikke skabe forbindelse til MQTT broker: {e}")
