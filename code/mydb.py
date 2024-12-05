@@ -20,12 +20,12 @@ mycursor = mydb.cursor()
 
 ''' Lav et table '''
 
-westprices = CREATE TABLE westprices (
+westprices = """CREATE TABLE westprices (
             id INT AUTO_INCREMENT PRIMARY KEY, 
             west FLOAT,  
             time VARCHAR(2),
             dato DATE
-            )
+            )"""
 
 eastprices = """CREATE TABLE eastprices (
             id INT AUTO_INCREMENT PRIMARY KEY, 

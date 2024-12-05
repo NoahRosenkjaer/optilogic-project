@@ -1,98 +1,52 @@
-import network
-import time
-from machine import Pin
-from umqtt.simple import MQTTClient
+import paho.mqtt.client as mqtt
+import random
+import ssl
 
-#Simulere en varmepumpe
-led = Pin(2,Pin.OUT)
-led.off()
+brokerIP        = "pi"
+brokerPort      = 8883
+brokerKeepAlive = 60
 
-def connect_ethernet():
-    # Initialisering
-    nic = network.LAN(mdc=Pin(23), mdio=Pin(18), power=Pin(12), phy_type=network.PHY_LAN8720, phy_addr=0)
-    
-    # Aktiverer interfacet
-    nic.active(True)
-    
-    # Statisk konfiguration
-    nic.ifconfig(('192.168.12.2', '255.255.255.0', '192.168.12.1', '8.8.8.8'))
-    
-    while not nic.isconnected():
-        print("Forbinder til Ethernet...")
-        time.sleep(2)
-        
-    print("Ethernet forbundet!")
-    print("IP address:", nic.ifconfig()[0])
-    return nic
+myTopic   = "Optilogic/user/action"
+#myPayload = random.randint(0, 99)
+myPayload = "turn_on"
+myQoS     = 0
+myRetain  = True
 
-def check_connection(nic):
-    if not nic.isconnected():
-        print("Ingen internet, Genforbinder")
-        return connect_ethernet()
-    return nic
+# Replace with your actual username and password
+username = "rasmus"
+password = "1234"
 
-# Callback function for when a message is received
-def on_message(topic, msg):
-    print(f"Besked: '{msg.decode()}' på topic '{topic.decode()}'")
-    if msg == b'turn_on':
-        print("Tænd for varmepumpekode")
-        led.on() 
-    elif msg == b'turn_off':
-        print("Sluk varmepumpe")
-        led.off()
+# Path to your CA certificate file
+ca_cert = "/home/pi/Desktop/ca.crt"
 
-# MQTT configuration
-brokerIP = "192.168.11.2"
-brokerPort = 1883
-mqtt_user = "rasmus"
-mqtt_password = "1234"
+# Create a new MQTT client instance
+client = mqtt.Client()
 
-myTopic = b"Optilogic/user/action"
-client_id = b"ESP32_Client"
+# Set username and password for authentication
+client.username_pw_set(username, password)
 
-nic = connect_ethernet()
+# Configure TLS/SSL
+client.tls_set(ca_certs=ca_cert, tls_version=ssl.PROTOCOL_TLSv1_2)
 
-# Initialiser MQTT client
-mqtt_client = MQTTClient(client_id, brokerIP, port=brokerPort, user=mqtt_user, password=mqtt_password)
+# Disable hostname verification (use only for testing, not recommended for production)
+#client.tls_insecure_set(True)
 
-# Callback funktion
-mqtt_client.set_callback(on_message)
-
-# Connect til MQTT Broker
 try:
-    mqtt_client.connect()
-    print("Connected to MQTT Broker!")
+    # Connect to the broker
+    client.connect(brokerIP, brokerPort, brokerKeepAlive)
+
+    # Publish the message
+    result = client.publish(topic=myTopic, qos=myQoS, payload=myPayload, retain=myRetain)
     
-    # Subscribe to the topic
-    mqtt_client.subscribe(myTopic)
+    # Check if the message was published successfully
+    if result.rc == mqtt.MQTT_ERR_SUCCESS:
+        print(f"{myPayload} has been published on broker {brokerIP}:{brokerPort} on topic: {myTopic}")
+    else:
+        print(f"Failed to publish message. Return code: {result.rc}")
 
 except Exception as e:
-    print(f"Failed to connect to the MQTT broker: {e}")
+    print(f"An error occurred: {e}")
 
-print("VARMEPUMPE = SLUKKET")
-# Main loop
-while True:
-    if nic.isconnected():
-        try:
-            mqtt_client.check_msg()
-        except Exception as e:
-            print(f"Error checking messages: {e}")
-            # Attempt to reconnect
-            try:
-                mqtt_client.connect()
-            except:
-                print("Failed to reconnect to MQTT broker")
-
-    else:
-        print("Ingen internetforbindelse, forbinder...")
-        print("VARMEPUMPE = STANDARD MODE")
-        led.off()
-        try:
-            nic = connect_ethernet()
-            if nic.isconnected():
-                mqtt_client.connect()
-                print("Forbundet til broker")
-                mqtt_client.subscribe(myTopic)
-                print("Subscriber")
-        except Exception as e:
-            print(f"Failed to connect to the MQTT broker: {e}")
+finally:
+    # Disconnect from the broker
+    client.disconnect()
