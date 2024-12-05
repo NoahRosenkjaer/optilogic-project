@@ -80,7 +80,7 @@ while True:
             # Attempt to reconnect
             try:
                 mqtt_client.connect()
-            except:
+            except Exception as e:
                 print("Failed to reconnect to MQTT broker")
 
     else:
